@@ -45,3 +45,9 @@ def test_uses_skin_type_rating_when_available():
     p = product("x", "serum", skin={"oily": {"avg": 4.8, "n": 300}})
     score, reason = trusted_rating(p, "oily")
     assert "oily skin" in reason
+
+
+def test_same_skin_reviews_beat_overall_fallback():
+    has_oily = product("a", "serum", skin={"oily": {"avg": 4.6, "n": 200}})
+    no_oily = product("b", "serum", rating=4.9, reviews=300)
+    assert trusted_rating(has_oily, "oily")[0] > trusted_rating(no_oily, "oily")[0]

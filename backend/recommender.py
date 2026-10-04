@@ -33,8 +33,12 @@ def trusted_rating(product, skin_type):
         rating, count = by_skin["avg"], by_skin["n"]
         reason = f"Rated {rating} by {count} reviewers with {skin_type} skin"
     else:
-        rating, count = product.get("rating") or 0, product.get("review_count") or 0
-        reason = f"Rated {rating} overall ({count} reviews)"
+        # Fewer than 20 reviewers with this skin type: use the overall rating,
+        # but trust it no more than 20 same-skin reviews would be trusted.
+        rating = product.get("rating") or 0
+        total = product.get("review_count") or 0
+        count = min(total, 20)
+        reason = f"Rated {rating} overall ({total} reviews, few with {skin_type} skin)"
     score = (count * rating + PRIOR_REVIEWS * PRIOR_RATING) / (count + PRIOR_REVIEWS)
     return score, reason
 
