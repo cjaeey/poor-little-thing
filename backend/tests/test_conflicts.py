@@ -26,3 +26,14 @@ def test_no_actives_no_conflicts():
 def test_order_does_not_matter():
     a, b = make("BP Wash", ["benzoyl_peroxide"]), make("Retinol", ["retinoid"])
     assert len(find_conflicts([a, b])) == len(find_conflicts([b, a])) == 1
+
+def test_same_exfoliant_twice_is_flagged():
+    routine = [make("BHA Serum", ["bha"]), make("BHA Cream", ["bha", "niacinamide"])]
+    conflicts = find_conflicts(routine)
+    assert len(conflicts) == 1
+    assert conflicts[0]["actives"] == ["bha"]
+
+
+def test_niacinamide_twice_is_fine():
+    routine = [make("A", ["niacinamide"]), make("B", ["niacinamide"])]
+    assert find_conflicts(routine) == []

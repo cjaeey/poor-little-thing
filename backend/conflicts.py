@@ -1,8 +1,4 @@
-"""
-
-Rules for active ingredients that shouldn't be layered in the same routine.
-
-"""
+"""Rules for active ingredients that shouldn't be layered in the same routine."""
 
 CONFLICT_RULES = [
     {"pair": {"retinoid", "aha"},
@@ -17,12 +13,17 @@ CONFLICT_RULES = [
      "message": "Two exfoliating acids in one routine can irritate skin. Start with one."},
 ]
 
+# Strong actives where two products with the same one is too much.
+NO_DOUBLING = {
+    "retinoid": "a retinoid",
+    "aha": "an AHA",
+    "bha": "a BHA",
+    "benzoyl_peroxide": "benzoyl peroxide",
+}
+
 
 def find_conflicts(products):
-    """Return a list of conflicts between products in ONE routine.
-
-    Each product is a dict with at least "name" and "actives" (a list of strings).
-    """
+    """Return a list of conflicts between products in ONE routine."""
     conflicts = []
     for i, first in enumerate(products):
         for second in products[i + 1:]:
@@ -35,6 +36,13 @@ def find_conflicts(products):
                         "actives": sorted(rule["pair"]),
                         "message": rule["message"],
                     })
+            shared = set(first["actives"]) & set(second["actives"]) & set(NO_DOUBLING)
+            for active in sorted(shared):
+                conflicts.append({
+                    "products": [first["name"], second["name"]],
+                    "actives": [active],
+                    "message": f"Both products contain {NO_DOUBLING[active]}. Doubling up can irritate skin, so use one per routine.",
+                })
     return conflicts
 
 
