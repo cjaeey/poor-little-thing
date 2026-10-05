@@ -25,9 +25,9 @@ MIN_REVIEWS_PER_SKIN_TYPE = 20 # ignore skin-type ratings with too few reviews
 STEP_KEYWORDS = {
     "eye": ["eye"],  # first, so "Eye Creams & Treatments" isn't labeled a serum
     "cleanser": ["cleanser", "face wash", "makeup remover", "exfoliator"],
-    "toner": ["toner"],
+    "toner": ["toner", "mist", "essence"],
     "serum": ["serum", "treatment", "face oil", "facial peel", "blemish"],
-    "moisturizer": ["moisturizer", "night cream", "mist"],
+    "moisturizer": ["moisturizer", "night cream"],
     "sunscreen": ["sunscreen", "spf"],
     "mask": ["mask"],
 }
