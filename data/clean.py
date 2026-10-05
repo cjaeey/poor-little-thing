@@ -15,6 +15,9 @@ import os
 
 import pandas as pd
 
+import warnings
+warnings.filterwarnings("ignore", category=SyntaxWarning)
+
 RAW_DIR = "raw"
 OUT_FILE = os.path.join("..", "backend", "products.json")
 MIN_REVIEWS_PER_SKIN_TYPE = 20 # ignore skin-type ratings with too few reviews
