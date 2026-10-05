@@ -31,8 +31,9 @@ STEP_KEYWORDS = {
     "sunscreen": ["sunscreen", "spf"],
     "mask": ["mask"],
 }
-SKIP_SECONDARY = {"Value & Gift Sets", "Mini Size", "High Tech Tools", "Self Tanners", "Wellness"}
-
+SKIP_SECONDARY = {"Value & Gift Sets", "Mini Size", "High Tech Tools",
+                  "Self Tanners", "Wellness", "Lip Balms & Treatments"}
+SKIP_TERTIARY = {"Body Sunscreen", "Blotting Papers", "Decollete & Neck Creams"}
 # Active ingredients the conflict checker cares about.
 ACTIVES = {
     "retinoid": ["retinol", "retinal", "retinyl", "hydroxypinacolone retinoate"],
@@ -118,6 +119,7 @@ def main():
 
     df = df[df["primary_category"] == "Skincare"]
     df = df[~df["secondary_category"].isin(SKIP_SECONDARY)]
+    df = df[~df["tertiary_category"].isin(SKIP_TERTIARY)]
     print(f"Skincare products (no sets/minis/tools): {len(df):,}")
 
     print("\nCategory counts (use these to tune STEP_KEYWORDS):")
