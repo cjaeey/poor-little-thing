@@ -22,10 +22,12 @@ app = FastAPI(title="Poor Little Thing API")
 # Which websites are allowed to call this API.
 allowed_origins = ["http://localhost:5173"]
 if os.getenv("FRONTEND_URL"):
-    allowed_origins.append(os.getenv("FRONTEND_URL"))
+    allowed_origins.append(os.getenv("FRONTEND_URL").strip().rstrip("/"))
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
+    # Also allow Vercel's preview and alternate URLs for this project.
+    allow_origin_regex=r"https://poor-little-thing[a-z0-9-]*\.vercel\.app",
     allow_methods=["*"],
     allow_headers=["*"],
 )
